@@ -3,8 +3,7 @@ import numpy as np
 import scipy.constants as constants
 from scipy.integrate import ode
 import math
-from pnl.policies.lqr import lqr_gain
-from pnl.errors import PNLError
+from wizluk.errors import WizlukError
 import scipy as sp
 import scipy.signal as sig
 from cvxpy import *
@@ -91,7 +90,7 @@ class WalkBot(object) :
             self._input_bounds[var] = [lb,ub]
             #print("Set bounds for var {} to {}".format(var,[lb,ub]))
         else:
-            raise PNLError("pnl.envs.walker.WalkBot.add_bounds(): Variable '{}' does not exist".format(var))
+            raise WizlukError("pnl.envs.walker.WalkBot.add_bounds(): Variable '{}' does not exist".format(var))
         self.h = self.make_constraints()
         #print(self.lower_bounds)
         #print(self.upper_bounds)
