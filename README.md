@@ -1,2 +1,8 @@
-# width-lookaheads-python
-Width lookaheads in Python
+# `Wizluk`: Width Lookaheads Python Library
+
+
+## Installation
+
+```
+$ pip install --user -e .
+```
