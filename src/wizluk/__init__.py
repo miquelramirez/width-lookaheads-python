@@ -6,6 +6,7 @@ __release__ = 'v0.1.0-alpha'
 import logging
 import copy
 from logging import FileHandler, StreamHandler
+import wizluk
 
 debug = False
 logger = None
@@ -25,7 +26,7 @@ def setup_logger(filename, debug=False):
 
     logging_level = logging.INFO
     if debug :
-        pnl.debug = debug
+        wizluk.debug = debug
         logging_level = logging.DEBUG
 
     log_filename = '{}'.format(filename)
@@ -33,9 +34,9 @@ def setup_logger(filename, debug=False):
     #logging.basicConfig( #filename = log_filename, \
     #                    level = logging_level,\
     #                    format='%(asctime)s [%(levelname)s] - %(message)s' )
-    pnl.logger = logging.getLogger(__name__)
-    pnl.logger.setLevel(logging_level)
-    pnl.logger.addHandler( FileHandler(log_filename, mode='w') )
-    pnl.logger.addHandler( StreamHandler() )
-    for handler in pnl.logger.handlers :
+    wizluk.logger = logging.getLogger(__name__)
+    wizluk.logger.setLevel(logging_level)
+    wizluk.logger.addHandler( FileHandler(log_filename, mode='w') )
+    wizluk.logger.addHandler( StreamHandler() )
+    for handler in wizluk.logger.handlers :
         handler.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] - %(message)s'))

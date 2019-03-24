@@ -12,7 +12,7 @@ from gym.envs.registration  import register
 
 register(
     id='CliffWorld-v1',
-    entry_point='pnl.envs.cliffworld:CliffWorldEnv',
+    entry_point='wizluk.envs.cliffworld:CliffWorldEnv',
     max_episode_steps = 100,
     kwargs = {
         'width': 12,
@@ -23,7 +23,7 @@ register(
 
 register(
     id='StickyCliffWorld-v1',
-    entry_point='pnl.envs.cliffworld:CliffWorldEnv',
+    entry_point='wizluk.envs.cliffworld:CliffWorldEnv',
     max_episode_steps = 100,
     kwargs = {
         'width': 12,
@@ -34,21 +34,21 @@ register(
 
 register(
     id='WumpusWorld-v1',
-    entry_point='pnl.envs.wumpus_world:WumpusWorldEnv',
+    entry_point='wizluk.envs.wumpus_world:WumpusWorldEnv',
     max_episode_steps = 1000,
     kwargs = {'observable': 'perceptions'}
 )
 
 register(
     id='WumpusWorld-v2',
-    entry_point='pnl.envs.wumpus_world:WumpusWorldEnv',
+    entry_point='wizluk.envs.wumpus_world:WumpusWorldEnv',
     max_episode_steps = 1000,
     kwargs = {'observable': 'full'}
 )
 
 register(
     id='WumpusWorld-v3',
-    entry_point='pnl.envs.wumpus_world:WumpusWorldEnv',
+    entry_point='wizluk.envs.wumpus_world:WumpusWorldEnv',
     max_episode_steps = 1000,
     kwargs = {'observable': 'full',
         'setting': 'gold_on_shortest_path',
@@ -57,7 +57,7 @@ register(
 )
 register(
     id='WumpusWorld-v4',
-    entry_point='pnl.envs.wumpus_world:WumpusWorldEnv',
+    entry_point='wizluk.envs.wumpus_world:WumpusWorldEnv',
     max_episode_steps = 1000,
     kwargs = {'observable': 'full',
         'setting': 'gold_on_shortest_path',
@@ -66,7 +66,7 @@ register(
 )
 register(
     id='WumpusWorld-v5',
-    entry_point='pnl.envs.wumpus_world:WumpusWorldEnv',
+    entry_point='wizluk.envs.wumpus_world:WumpusWorldEnv',
     max_episode_steps = 1000,
     kwargs = {'observable': 'full',
         'setting': 'gold_on_shortest_path',
@@ -75,7 +75,7 @@ register(
 )
 register(
     id='WumpusWorld-v6',
-    entry_point='pnl.envs.wumpus_world:WumpusWorldEnv',
+    entry_point='wizluk.envs.wumpus_world:WumpusWorldEnv',
     max_episode_steps = 1000,
     kwargs = {'observable': 'full',
         'setting': 'gold_on_shortest_path',
@@ -84,7 +84,7 @@ register(
 )
 register(
     id='WumpusWorld-v7',
-    entry_point='pnl.envs.wumpus_world:WumpusWorldEnv',
+    entry_point='wizluk.envs.wumpus_world:WumpusWorldEnv',
     max_episode_steps = 1000,
     kwargs = {'observable': 'full',
         'setting': 'gold_on_shortest_path',
@@ -94,7 +94,7 @@ register(
 
 register(
     id='WumpusWorld-randActions-v3',
-    entry_point='pnl.envs.wumpus_world:WumpusWorldEnv',
+    entry_point='wizluk.envs.wumpus_world:WumpusWorldEnv',
     max_episode_steps = 1000,
     kwargs = {'observable': 'full',
         'setting': 'gold_on_shortest_path',
@@ -105,7 +105,7 @@ register(
 
 register(
     id='WumpusWorld-randActions-v7',
-    entry_point='pnl.envs.wumpus_world:WumpusWorldEnv',
+    entry_point='wizluk.envs.wumpus_world:WumpusWorldEnv',
     max_episode_steps = 1000,
     kwargs = {'observable': 'full',
         'setting': 'gold_on_shortest_path',
@@ -117,7 +117,7 @@ register(
 for d in [ 4, 8, 10, 20, 50, 16, 32, 64, 100, 1000 ] :
     register(
         id='GridWorld-{}x{}-v1'.format(d,d),
-        entry_point='pnl.envs.gridworld:GridWorldEnv',
+        entry_point='wizluk.envs.gridworld:GridWorldEnv',
         max_episode_steps=1000,
         kwargs={
             'dimension': d
@@ -127,7 +127,7 @@ for d in [ 4, 8, 10, 20, 50, 16, 32, 64, 100, 1000 ] :
 for d in [ 4, 8, 10, 20, 50, 16, 32, 64, 100, 1000 ] :
     register(
         id='GridWorld-{}x{}-v2'.format(d,d),
-        entry_point='pnl.envs.gridworld:GridWorldEnv',
+        entry_point='wizluk.envs.gridworld:GridWorldEnv',
         max_episode_steps=1000,
         kwargs={
             'dimension': d,
@@ -137,7 +137,7 @@ for d in [ 4, 8, 10, 20, 50, 16, 32, 64, 100, 1000 ] :
     for s in range(10):
         register(
             id='GridWorld-{}x{}-initS{}-v2'.format(d,d,s),
-            entry_point='pnl.envs.gridworld:GridWorldEnv',
+            entry_point='wizluk.envs.gridworld:GridWorldEnv',
             max_episode_steps=1000,
             kwargs={
                 'dimension': d,
@@ -149,7 +149,7 @@ for d in [ 4, 8, 10, 20, 50, 16, 32, 64, 100, 1000 ] :
 for d in [ 4, 8, 10, 20, 50, 16, 32, 64, 100, 1000 ] :
     register(
         id='GridWorld-{}x{}-v3'.format(d,d),
-        entry_point='pnl.envs.gridworld:GridWorldEnv',
+        entry_point='wizluk.envs.gridworld:GridWorldEnv',
         max_episode_steps=1000,
         kwargs={
             'dimension': d,
@@ -159,7 +159,7 @@ for d in [ 4, 8, 10, 20, 50, 16, 32, 64, 100, 1000 ] :
     for s in range(10):
         register(
             id='GridWorld-{}x{}-initS{}-v3'.format(d,d,s),
-            entry_point='pnl.envs.gridworld:GridWorldEnv',
+            entry_point='wizluk.envs.gridworld:GridWorldEnv',
             max_episode_steps=1000,
             kwargs={
                 'dimension': d,
@@ -171,7 +171,7 @@ for d in [ 4, 8, 10, 20, 50, 16, 32, 64, 100, 1000 ] :
 for d in [ 4, 8, 10, 20, 50, 16, 32, 64, 100, 1000 ] :
     register(
         id='GridWorld-{}x{}-v4'.format(d,d),
-        entry_point='pnl.envs.gridworld:GridWorldEnv',
+        entry_point='wizluk.envs.gridworld:GridWorldEnv',
         max_episode_steps=1000,
         kwargs={
             'dimension': d,
@@ -182,7 +182,7 @@ for d in [ 4, 8, 10, 20, 50, 16, 32, 64, 100, 1000 ] :
 for d in [ 4, 8, 10, 20, 50, 16, 32, 64, 100, 1000 ] :
     register(
         id='GridWorld-{}x{}-v5'.format(d,d),
-        entry_point='pnl.envs.gridworld:GridWorldEnv',
+        entry_point='wizluk.envs.gridworld:GridWorldEnv',
         max_episode_steps=1000,
         kwargs={
             'dimension': d,
@@ -194,7 +194,7 @@ for d in [ 4, 8, 10, 20, 50, 16, 32, 64, 100, 1000 ] :
     for s in range(10):
         register(
             id='GridWorld-{}x{}-initS{}-v5'.format(d,d,s),
-            entry_point='pnl.envs.gridworld:GridWorldEnv',
+            entry_point='wizluk.envs.gridworld:GridWorldEnv',
             max_episode_steps=1000,
             kwargs={
                 'dimension': d,
@@ -207,7 +207,7 @@ for d in [ 4, 8, 10, 20, 50, 16, 32, 64, 100, 1000 ] :
 for d in [ 4, 8, 10, 20, 50, 16, 32, 64, 100, 1000 ] :
     register(
         id='CTP-{}x{}-v1'.format(d,d),
-        entry_point='pnl.envs.CanadianTravellersProblem:CTPEnv',
+        entry_point='wizluk.envs.CanadianTravellersProblem:CTPEnv',
         max_episode_steps=1000,
         kwargs={
             'dimension': d,
@@ -219,32 +219,7 @@ for d in [ 4, 8, 10, 20, 50, 16, 32, 64, 100, 1000 ] :
     for s in range(10):
         register(
             id='CTP-{}x{}-initS{}-v1'.format(d,d,s),
-            entry_point='pnl.envs.CanadianTravellersProblem:CTPEnv',
-            max_episode_steps=1000,
-            kwargs={
-                'dimension': d,
-                'initState': s,
-                'terminal_def': "center",
-                'obstacles': "True"
-            }
-        )
-
-for d in [ 4, 8, 10, 20, 50, 16, 32, 64, 100, 1000 ] :
-    register(
-        id='CTP-{}x{}-v2'.format(d,d),
-        entry_point='pnl.envs.CanadianTravellersProblem_v2:CTPEnvV2',
-        max_episode_steps=1000,
-        kwargs={
-            'dimension': d,
-            'terminal_def': "center",
-            'obstacles': "True"
-        }
-    )
-
-    for s in range(10):
-        register(
-            id='CTP-{}x{}-initS{}-v2'.format(d,d,s),
-            entry_point='pnl.envs.CanadianTravellersProblem_v2:CTPEnvV2',
+            entry_point='wizluk.envs.CanadianTravellersProblem:CTPEnv',
             max_episode_steps=1000,
             kwargs={
                 'dimension': d,
@@ -256,14 +231,14 @@ for d in [ 4, 8, 10, 20, 50, 16, 32, 64, 100, 1000 ] :
 
 register(
     id='WalkBot-v0',
-    entry_point = 'pnl.envs.walker:WalkBotSCEnv',
+    entry_point = 'wizluk.envs.walker:WalkBotSCEnv',
     max_episode_steps=100,
     kwargs={'cost_function' : 'shortest_path'},
 )
 
 register(
     id='WalkBot-v1',
-    entry_point = 'pnl.envs.walker:WalkBotSCEnv',
+    entry_point = 'wizluk.envs.walker:WalkBotSCEnv',
     max_episode_steps=100,
     kwargs={'done_on_invalid':False,
             'cost_function' : 'shortest_path'
@@ -272,7 +247,7 @@ register(
 
 register(
     id='WalkBot-v2',
-    entry_point = 'pnl.envs.walker:WalkBotSCEnv',
+    entry_point = 'wizluk.envs.walker:WalkBotSCEnv',
     max_episode_steps=100,
     kwargs={'done_on_invalid':False,
             'cost_function' : 'QR'
@@ -281,7 +256,7 @@ register(
 
 register(
     id='WalkBot-v3',
-    entry_point = 'pnl.envs.walker:WalkBotSCEnv',
+    entry_point = 'wizluk.envs.walker:WalkBotSCEnv',
     max_episode_steps=100,
     kwargs={'done_on_invalid':False,
             'cost_function' : 'QR',
@@ -294,7 +269,7 @@ register(
 
 register(
     id='WalkBot-RandomInit-v0',
-    entry_point = 'pnl.envs.walker:WalkBotSCEnv',
+    entry_point = 'wizluk.envs.walker:WalkBotSCEnv',
     max_episode_steps=100,
     kwargs={'cost_function' : 'QR',
         'random_initial_state' : True
@@ -303,7 +278,7 @@ register(
 
 register(
     id='WalkBot-RandomInit-v1',
-    entry_point = 'pnl.envs.walker:WalkBotSCEnv',
+    entry_point = 'wizluk.envs.walker:WalkBotSCEnv',
     max_episode_steps=100,
     kwargs={'done_on_invalid':False,
             'random_initial_state': True,
@@ -318,7 +293,7 @@ register(
 
 register(
     id='ContinuousWalkBot-v0',
-    entry_point = 'pnl.envs.walker:WalkBotEnv',
+    entry_point = 'wizluk.envs.walker:WalkBotEnv',
     max_episode_steps=100,
     kwargs={'cost_function' : 'QR'
     },
@@ -326,7 +301,7 @@ register(
 
 register(
     id='ContinuousWalkBot-v1',
-    entry_point = 'pnl.envs.walker:WalkBotEnv',
+    entry_point = 'wizluk.envs.walker:WalkBotEnv',
     max_episode_steps=100,
     kwargs={'cost_function' : 'QR',
         'perturb_velocities': True,
@@ -337,7 +312,7 @@ register(
 
 register(
     id='ContinuousWalkBot-RandomInit-v0',
-    entry_point = 'pnl.envs.walker:WalkBotEnv',
+    entry_point = 'wizluk.envs.walker:WalkBotEnv',
     max_episode_steps=100,
     kwargs={'cost_function' : 'QR',
         'random_initial_state' : True
@@ -346,7 +321,7 @@ register(
 
 register(
     id='ContinuousWalkBot-RandomInit-v1',
-    entry_point = 'pnl.envs.walker:WalkBotEnv',
+    entry_point = 'wizluk.envs.walker:WalkBotEnv',
     max_episode_steps=100,
     kwargs={'cost_function' : 'QR',
         'random_initial_state': True,
@@ -358,14 +333,14 @@ register(
 
 register(
     id='MountainCarContinuous-v1',
-    entry_point = 'pnl.envs.mountain_car_QR:Continuous_MountainCarEnv',
+    entry_point = 'wizluk.envs.mountain_car_QR:Continuous_MountainCarEnv',
     max_episode_steps=10000,
     kwargs = {},
 )
 
 register(
     id='RechtLQR-v0',
-    entry_point = 'pnl.envs.recht_lqr:LQR_Env',
+    entry_point = 'wizluk.envs.recht_lqr:LQR_Env',
     max_episode_steps=1000,
     kwargs = {}
 )
@@ -381,7 +356,7 @@ register(
 
 register(
     id='Antishape-v1',
-    entry_point = 'pnl.envs.antishape:Antishape_Env',
+    entry_point = 'wizluk.envs.antishape:Antishape_Env',
     kwargs = {
         'num_states' : 100
     }
@@ -390,7 +365,7 @@ register(
 for d in [ 10, 50, 100, 200, 500 ] :
     register(
         id='Antishape-{}-v1'.format(d),
-        entry_point = 'pnl.envs.antishape:Antishape_Env',
+        entry_point = 'wizluk.envs.antishape:Antishape_Env',
         max_episode_steps= 100000,
         kwargs = {
             'num_states' : d
@@ -400,7 +375,7 @@ for d in [ 10, 50, 100, 200, 500 ] :
     for s in range(10):
         register(
             id='Antishape-{}-initS{}-v1'.format(d,s),
-            entry_point = 'pnl.envs.antishape:Antishape_Env',
+            entry_point = 'wizluk.envs.antishape:Antishape_Env',
             max_episode_steps= 100000,
             kwargs = {
                 'num_states' : d,
@@ -411,7 +386,7 @@ for d in [ 10, 50, 100, 200, 500 ] :
 for d in [ 10, 50, 100, 200, 500 ] :
     register(
         id='Antishape-{}-v2'.format(d),
-        entry_point = 'pnl.envs.antishape_v2:Antishape_EnvV2',
+        entry_point = 'wizluk.envs.antishape_v2:Antishape_EnvV2',
         max_episode_steps= 100000,
         kwargs = {
             'num_states' : d
@@ -421,7 +396,7 @@ for d in [ 10, 50, 100, 200, 500 ] :
     for s in range(10):
         register(
             id='Antishape-{}-initS{}-v2'.format(d,s),
-            entry_point = 'pnl.envs.antishape_v2:Antishape_EnvV2',
+            entry_point = 'wizluk.envs.antishape_v2:Antishape_EnvV2',
             max_episode_steps= 100000,
             kwargs = {
                 'num_states' : d,
@@ -431,7 +406,7 @@ for d in [ 10, 50, 100, 200, 500 ] :
 
 register(
     id='Combolock-v1',
-    entry_point = 'pnl.envs.combolock:Combolock_Env',
+    entry_point = 'wizluk.envs.combolock:Combolock_Env',
     kwargs = {
         'num_states' : 100
     }
@@ -440,7 +415,7 @@ register(
 for d in [ 10, 50, 100, 200, 500 ] :
     register(
         id='Combolock-{}-v1'.format(d),
-        entry_point = 'pnl.envs.combolock:Combolock_Env',
+        entry_point = 'wizluk.envs.combolock:Combolock_Env',
         max_episode_steps= 100000,
         kwargs = {
             'num_states' : d
@@ -450,7 +425,7 @@ for d in [ 10, 50, 100, 200, 500 ] :
     for s in range(10):
         register(
             id='Combolock-{}-initS{}-v1'.format(d,s),
-            entry_point = 'pnl.envs.combolock:Combolock_Env',
+            entry_point = 'wizluk.envs.combolock:Combolock_Env',
             max_episode_steps= 100000,
             kwargs = {
                 'num_states' : d,
@@ -461,7 +436,7 @@ for d in [ 10, 50, 100, 200, 500 ] :
 for d in [ 10, 50, 100, 200, 500 ] :
     register(
         id='Combolock-{}-v2'.format(d),
-        entry_point = 'pnl.envs.combolock_v2:Combolock_EnvV2',
+        entry_point = 'wizluk.envs.combolock_v2:Combolock_EnvV2',
         max_episode_steps= 100000,
         kwargs = {
             'num_states' : d
@@ -471,7 +446,7 @@ for d in [ 10, 50, 100, 200, 500 ] :
     for s in range(10):
         register(
             id='Combolock-{}-initS{}-v2'.format(d,s),
-            entry_point = 'pnl.envs.combolock_v2:Combolock_EnvV2',
+            entry_point = 'wizluk.envs.combolock_v2:Combolock_EnvV2',
             max_episode_steps= 100000,
             kwargs = {
                 'num_states' : d,
@@ -482,7 +457,7 @@ for d in [ 10, 50, 100, 200, 500 ] :
 
 register(
     id='LunarLanderContinuous-v3',
-    entry_point='pnl.envs.lunar_lander:LunarLanderContinuous',
+    entry_point='wizluk.envs.lunar_lander:LunarLanderContinuous',
     max_episode_steps=1000,
     reward_threshold=200,
 )

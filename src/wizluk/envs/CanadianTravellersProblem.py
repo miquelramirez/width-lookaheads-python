@@ -26,7 +26,7 @@ class CTPEnv(gym.Env) :
         initPositions = [[0,0], [0, 1], [d/2 - 1, 0], [d/2 - 1, d/2 - 1], [d/2, d/2 - 2], [0,d/2], [d - 1, d - 1], [d - 1 - d/2 , d - 1], [d - 1 , d - 1 - d/2 ], [d - 2 , d - 1 - d/2 + 2]]
         assert(self.initPos < len(initPositions))
         self.initPos = initPositions[self.initPos]
-        self.observation_space = spaces.Box(low=0, high=4, shape=(int(self.dimension*self.dimension),), dtype=np.int)
+        self.observation_space = spaces.Box(low=0, high=d - 1, shape=(2,), dtype=np.int)
         self.terminal_def = kwargs.get('terminal_def',"corners")
         self.use_obstacles = kwargs.get('obstacles',"False")
         self.seed()
@@ -79,11 +79,7 @@ class CTPEnv(gym.Env) :
 
     @property
     def state(self) :
-        return self._s
-
-    @state.setter
-    def state(self, v) :
-        self._s = copy.deepcopy(v)
+        return self._position
 
     def __deepcopy__(self, memo):
         cls = self.__class__
@@ -141,7 +137,7 @@ class CTPEnv(gym.Env) :
                 reward = 0.0
                 done = True
 
-        return self._s, reward, done, {}
+        return self._position, reward, done, {}
 
     def checkPositionAndUpdate(self, ind):
         ind = int(ind)
@@ -155,7 +151,7 @@ class CTPEnv(gym.Env) :
                     break
 
     def positionUpdate(self):
-        for pos in range(len(self.observation_space.low)):
+        for pos in range(int(self.dimension*self.dimension)):
             if self._s[pos] == 3:
                 self._s[pos] = 1 # If agent was in cell must be unblocked
         self._s[int(self._position[0] * self.dimension + self._position[1])] = 3 #Set new position
@@ -180,7 +176,7 @@ class CTPEnv(gym.Env) :
     def reset(self, s = None) :
         self.obstacles = []
         if s is None :
-            self._s = np.zeros(len(self.observation_space.low))
+            self._s = np.zeros(int(self.dimension*self.dimension))
             self._position = self.initPos
             self.positionUpdate()
         else :
@@ -194,7 +190,7 @@ class CTPEnv(gym.Env) :
                 np.array([self.dimension - 1 , 0 ]) ]
             self.diagDirectionx = [1, -1]
             self.diagDirectiony = [-1, 1]
-        return self._s
+        return self._position
 
     def getAdmissibleHeuristic(self):
         assert(self.terminal_def == "center") # Set up for use only when terminal in middle.

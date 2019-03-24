@@ -90,7 +90,7 @@ class WalkBot(object) :
             self._input_bounds[var] = [lb,ub]
             #print("Set bounds for var {} to {}".format(var,[lb,ub]))
         else:
-            raise WizlukError("pnl.envs.walker.WalkBot.add_bounds(): Variable '{}' does not exist".format(var))
+            raise WizlukError("wizluk.envs.walker.WalkBot.add_bounds(): Variable '{}' does not exist".format(var))
         self.h = self.make_constraints()
         #print(self.lower_bounds)
         #print(self.upper_bounds)
