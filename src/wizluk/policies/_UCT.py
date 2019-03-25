@@ -132,7 +132,7 @@ class UCT(object) :
             elapsed_steps = env._elapsed_steps
             env._max_episode_seconds = 2**20
         numberOfTimesNoSimCalls = 0
-        while not self.root.terminal and budget > 0 and self.sim_calls - self.init_sim_calls < self.sim_budget and n.d <= self._horizon and numberOfTimesNoSimCalls < 40:
+        while not self.root.terminal and budget > 0 and self.sim_calls - self.init_sim_calls < self.sim_budget and n.d <= self._horizon and numberOfTimesNoSimCalls < self.sim_budget * 100:
             # MRJ: this is a critical detail!
             tempSimBudget = self.sim_calls
             t0 = time.perf_counter()
