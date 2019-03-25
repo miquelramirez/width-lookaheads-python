@@ -29,6 +29,7 @@ class ClassicRollout(object):
             lookahead.root.feature_table = ClassicTabularNovelty()
             for f in lookahead._features :
                 lookahead.root.feature_table.add_feature(f)
+            lookahead.emptyFeatureTable = copy.deepcopy(lookahead.root.feature_table)
         else:
             lookahead.root.feature_table = copy.deepcopy(lookahead.emptyFeatureTable)
 
@@ -86,6 +87,7 @@ class DepthBasedRollout(object):
             lookahead.root.feature_table = DepthBasedTabularNovelty()
             for f in lookahead._features :
                 lookahead.root.feature_table.add_feature(f)
+            lookahead.emptyFeatureTable = copy.deepcopy(lookahead.root.feature_table)
         else:
             lookahead.root.feature_table = copy.deepcopy(lookahead.emptyFeatureTable)
 
@@ -302,7 +304,7 @@ class IW_Rollout(object) :
             env._max_episode_seconds = 2**20
         wizluk.logger.debug("ep steps {}".format(env._elapsed_steps))
         numberOfTimesNoSimCalls = 0
-        while not self.root.SOLVED and budget > 0 and self.sim_calls - self.init_sim_calls < self.sim_budget and self._max_base_policy_evaluations > num_rollouts_for_action  and numberOfTimesNoSimCalls < 40:
+        while not self.root.SOLVED and budget > 0 and self.sim_calls - self.init_sim_calls < self.sim_budget and self._max_base_policy_evaluations > num_rollouts_for_action  and numberOfTimesNoSimCalls < self.sim_budget * 100:
             tempSimBudget = self.sim_calls
             t0 = time.perf_counter()
             if self._atari == "True":
@@ -378,7 +380,6 @@ class IW_Rollout(object) :
                     n.SOLVED = False
                     if self._caching != "Full":
                         n.restoreState = None
-                        n._state = 0
                     backed_up_OR.add(n)
                     open.pop()
                     continue
@@ -398,7 +399,6 @@ class IW_Rollout(object) :
                 n.V = best_child_value
                 if self._caching != "Full":
                     n.restoreState = None
-                    n._state = 0
                 n.SOLVED = False
                 n._d += -1
                 backed_up_OR.add(n)
@@ -441,23 +441,18 @@ class IW_Rollout(object) :
         wizluk.logger.debug("IW Rollout: Selecting best action: ")
         best_Q = float('-inf')
         best_action = None
-        prev = None
-        all_same = True
+        candidates = []
         for act, child in n.children.items() :
-            wizluk.logger.debug('Q(a,s) for action {} is :{}'.format(act,child.Q))
             if child.Q > best_Q :
-                best_action = act
+                candidates = [act]
                 best_Q = child.Q
                 for node, reward in child.children:
                     break
                 self._exp_graph.register(node)
-            if prev is not None and prev.Q != child.Q :
-                all_same = False
-            prev = child
-        if all_same :
-            candidates = [ k for k in n.children.keys()]
-            return random.choice(candidates)
+            elif child.Q == best_Q:
+                candidates.append(act)
 
+        best_action = random.choice(candidates)
         return best_action
 
     def update_table(self, n: OR_Node):
@@ -515,8 +510,7 @@ class IW_Rollout(object) :
 
                 for act, child in n.children.items():
                         open2.append(child)
-                if self._caching != "Full":
-                    n._state = 0
+                if self._caching != "Full" and n != new_root:
                     n.visited = False
                 continue
             elif isinstance(n, AND_Node):

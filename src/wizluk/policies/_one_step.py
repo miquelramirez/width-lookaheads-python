@@ -155,11 +155,18 @@ class One_Step(object) :
         wizluk.logger.debug("OneStep: Selecting best action: ")
         best_Q = float('-inf')
         best_action = None
+        candidates = []
         for act, child in n.children.items() :
-            wizluk.logger.debug('Q(a,s) for action {} is :{}'.format(act,child.Q))
             if child.Q > best_Q :
-                best_action = act
+                candidates = [act]
                 best_Q = child.Q
+                for node, reward in child.children:
+                    break
+                self._exp_graph.register(node)
+            elif child.Q == best_Q:
+                candidates.append(act)
+
+        best_action = random.choice(candidates)
         return best_action
 
     def backup_iterative(self, n_history, gamma) :

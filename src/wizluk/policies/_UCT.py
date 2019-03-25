@@ -169,10 +169,18 @@ class UCT(object) :
     def select_best( self, n : OR_Node ) :
         best_Q = float('-inf')
         best_action = None
+        candidates = []
         for act, child in n.children.items() :
             if child.Q > best_Q :
-                best_action = act
+                candidates = [act]
                 best_Q = child.Q
+                for node, reward in child.children:
+                    break
+                self._exp_graph.register(node)
+            elif child.Q == best_Q:
+                candidates.append(act)
+
+        best_action = random.choice(candidates)
         return best_action
 
     def backup_iterative(self, n_history, gamma) :
@@ -437,7 +445,6 @@ class UCT(object) :
                 for act, child in n.children.items():
                         open2.append(child)
                 if self._caching != "Full":
-                    n._state = 0
                     n.visited = False
                 continue
             elif isinstance(n, AND_Node):
