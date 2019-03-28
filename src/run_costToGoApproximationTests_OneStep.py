@@ -58,7 +58,7 @@ def run_single_run(iw_parameters,iw_variants, run_num, Domain, sim_dt, sim_budge
     env.seed(seed)
     random.seed(seed)
 
-    IW_Rollout = wizluk.policies.OneStep(**(iw_parameters[run_num]))
+    IW_Rollout = wizluk.policies.One_Step(**(iw_parameters[run_num]))
     IW_Rollout_agent = wizluk.agents.LookaheadAgent(env, IW_Rollout, name='IW_Rollout', domain='GridWorld-16x16-v1')
     IW_Rollout_df = {}
     IW_Rollout_agent.init_evaluation_statistics(IW_Rollout_df)
