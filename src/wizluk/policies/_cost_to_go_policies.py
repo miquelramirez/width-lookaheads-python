@@ -27,12 +27,7 @@ def random_rollout(lookahead, env, n : OR_Node) :
         while True:
             # Check for remaining budget
             if lookahead.sim_calls - lookahead.init_sim_calls >= lookahead.sim_budget:
-                if k == 0:
-                    r =  float('-inf')
-                    rolloutsComplete = 1
-                else:
-                    r = 0.0
-                    rolloutsComplete = k
+                rolloutsComplete = k + 1
                 break
             if lookahead._atari == "True":
                 a =lookahead.base_policy.get_action(env, state)
@@ -97,12 +92,7 @@ def knuth_alg(lookahead, env, n : OR_Node) :
         while True:
             # Check for remaining budget
             if lookahead.sim_calls - lookahead.init_sim_calls >= lookahead.sim_budget:
-                if k == 0:
-                    r =  float('-inf')
-                    rolloutsComplete = 1
-                else:
-                    r = 0.0
-                    rolloutsComplete = k
+                rolloutsComplete = k + 1
                 break
             if lookahead._atari == "True":
                 a =lookahead.base_policy.get_action(env, state)
@@ -174,12 +164,7 @@ def stoch_enum_alg(lookahead, env, n : OR_Node) :
         while True:
             # Check for remaining budget
             if lookahead.sim_calls - lookahead.init_sim_calls >= lookahead.sim_budget:
-                if k == 0:
-                    r =  float('-inf')
-                    rolloutsComplete = 1
-                else:
-                    r = 0.0
-                    rolloutsComplete = k
+                rolloutsComplete = k + 1
                 break
             rewardForStep = 0
             newHyperChildren = []

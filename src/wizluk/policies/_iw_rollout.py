@@ -443,13 +443,12 @@ class IW_Rollout(object) :
         best_action = None
         candidates = []
         for act, child in n.children.items() :
+            for node, reward in child.children:
+                self._exp_graph.register(node) #register all nodes to tree for caching
             if child.Q > best_Q :
                 candidates = [act]
                 best_Q = child.Q
-                for node, reward in child.children:
-                    break
-                self._exp_graph.register(node)
-            elif child.Q == best_Q:
+            elif abs(child.Q - best_Q) < 0.0000001 :
                 candidates.append(act)
 
         best_action = random.choice(candidates)

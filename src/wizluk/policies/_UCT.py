@@ -171,13 +171,12 @@ class UCT(object) :
         best_action = None
         candidates = []
         for act, child in n.children.items() :
+            for node, reward in child.children: # for caching
+                self._exp_graph.register(node)
             if child.Q > best_Q :
                 candidates = [act]
                 best_Q = child.Q
-                for node, reward in child.children:
-                    break
-                self._exp_graph.register(node)
-            elif child.Q == best_Q:
+            elif abs(child.Q - best_Q) < 0.0000001 :
                 candidates.append(act)
 
         best_action = random.choice(candidates)
@@ -211,6 +210,7 @@ class UCT(object) :
                 continue
             elif isinstance(n, AND_Node):
                 assert last_or_node is not None
+                assert self.isInChildrenOnce(n, last_or_node)
                 if self.tabulate_state_visits:
                     try:
                         self.stateCountAction[n._action][tuple(n.state[0].tolist())] += 1
@@ -229,6 +229,17 @@ class UCT(object) :
             else :
                 assert False
 
+    # Used for assertion tests
+    def isInChildrenOnce(self, parentNode: AND_Node, childNode: OR_Node):
+        isChildOnce = False
+        for child, childReward in parentNode.children:
+            if np.array_equal(child._state, childNode._state) and childReward == childNode.r and child.terminal == childNode.terminal:
+                if self._atari == "True" and self._caching != "None":
+                    if hasattr(childNode, 'restoreStateFrom') and np.array_equal(child.restoreState, childNode.restoreState):
+                        isChildOnce = not isChildOnce
+                else:
+                    isChildOnce = not isChildOnce
+        return isChildOnce
 
     def expand(self, env, n : OR_Node ) :
         """
@@ -263,30 +274,37 @@ class UCT(object) :
         history.append(n.children[selected])
         if self._atari == "True" and len(n.children[selected].children) != 0 and self._caching != "None":
             elapsed_steps = env._elapsed_steps
-            envuw = env.unwrapped
-            for node, reward in n.children[selected].children:
-                break
             wasRestored = False
+            for node, reward in n.children[selected].children:
+                if hasattr(node, 'restoreStateFrom') and node.restoreState is not None:
+                    break
             if hasattr(node, 'restoreStateFrom') and node.restoreState is not None :
                 if node.restoreStateFrom != self.get_action_call and self._caching != "Full": #State is not from this get action call therefore for partial caching don't restore
                     node.restoreState = None
                 else:
                     env.unwrapped.restore_full_state(node.restoreState)
                     env._elapsed_steps = elapsed_steps + 1
+                    succ = node
                     wasRestored = True
 
             if not wasRestored:
-                next_state, sreward, terminal, _ = env.step(selected)
-                reward = sreward
+                next_state, reward, terminal, _ = env.step(selected)
                 self.sim_calls += 1
-                node.restoreState = env.unwrapped.clone_full_state()
-                node.restoreStateFrom = self.get_action_call
-                node._state = copy.deepcopy(next_state)
-                node.terminal = terminal
+                if np.array_equal(next_state, node._state) and reward == node.r and terminal == node.terminal:
+                    succ = node
+                else:
+                    succ = copy.deepcopy(node)
+                    succ.r = reward
+                    succ._state = copy.deepcopy(next_state)
+                    succ.terminal = terminal
+                    n.children[selected].children.add((succ, reward))
+                succ.restoreState = env.unwrapped.clone_full_state()
+                succ.restoreStateFrom = self.get_action_call
         else:
             next_state, reward, terminal, _ = env.step(selected)
             self.sim_calls += 1
-            next_state = np.reshape(next_state, [1, np.prod(env.observation_space.shape)])
+            if self._atari != "True":
+                next_state = np.reshape(next_state, [1, np.prod(env.observation_space.shape)])
             succ = OR_Node(next_state,n.d + 1,terminal)
             if n.children[selected].update(reward,succ) :
                 if self.tabulate_state_visits:
@@ -306,13 +324,16 @@ class UCT(object) :
                         succ = succ1
                         foundChild = True
                 assert(foundChild)
-            node = succ
+            if self._atari == "True" and self._caching != "None":
+                succ.restoreState = env.unwrapped.clone_full_state()
+                succ.restoreStateFrom = self.get_action_call
+        history.append(succ)
 
-        history.append(node)
+        assert self.isInChildrenOnce(n.children[selected], succ)
         n.children[selected].visited = True
 
-        self.max_depth = max( self.max_depth, node.d)
-        return node, history
+        self.max_depth = max( self.max_depth, succ.d)
+        return succ, history
 
     def pick_random_action(self, env) :
         actions = [ a for a in range(env.action_space.n)]
@@ -347,28 +368,27 @@ class UCT(object) :
             elapsed_steps = env._elapsed_steps
             envuw = env.unwrapped
             for node, reward in n.children[selected].children:
-                break
+                if hasattr(node, 'restoreStateFrom') and node.restoreState is not None:
+                    break
             wasRestored = False
-            if hasattr(node, 'restoreStateFrom') and node.restoreState is not None :
+            if hasattr(node, 'restoreStateFrom') and node.restoreState is not None:
                 if node.restoreStateFrom != self.get_action_call and self._caching != "Full": #State is not from this get action call therefore for partial caching don't restore
                     node.restoreState = None
                 else:
                     env.unwrapped.restore_full_state(node.restoreState)
                     env._elapsed_steps = elapsed_steps + 1
+                    succ = node
                     wasRestored = True
 
             if not wasRestored:
-                next_state, sreward, terminal, _ = env.step(selected)
-                reward = sreward
-                self.sim_calls += 1
-                node.restoreState = env.unwrapped.clone_full_state()
-                node.restoreStateFrom = self.get_action_call
-                node._state = copy.deepcopy(next_state)
-                node.terminal = terminal
+                assert(False)
         else:
             next_state, reward, terminal, _ = env.step(selected)
             self.sim_calls += 1
-            next_state = np.reshape(next_state, [1, np.prod(env.observation_space.shape)])
+            if self._atari != "True":
+                next_state = np.reshape(next_state, [1, np.prod(env.observation_space.shape)])
+            elif self._caching != "None": # If atari and caching is on
+                assert(False)
             succ = OR_Node(next_state,n.d + 1,terminal)
             if n.children[selected].update(reward,succ) :
                 if self.tabulate_state_visits:
@@ -388,13 +408,12 @@ class UCT(object) :
                         succ = succ1
                         foundChild = True
                 assert(foundChild)
-            node = succ
 
-        history.append(node)
+        history.append(succ)
         n.children[selected].visited = True
 
-        self.max_depth = max( self.max_depth, node.d)
-        return node, history
+        self.max_depth = max( self.max_depth, succ.d)
+        return succ, history
 
     def cost_to_go_est(self, env, n: OR_Node):
         if self._cost_to_go_est == "random_rollout" :
@@ -444,14 +463,17 @@ class UCT(object) :
 
                 for act, child in n.children.items():
                         open2.append(child)
+                n._d -= 1
                 if self._caching != "Full":
                     n.visited = False
+                    n.restoreState = None
                 continue
             elif isinstance(n, AND_Node):
                 for succ, r in n.children :
                         open2.append(succ)
                 if self._caching != "Full":
                     n.visited = False
+                    n.restoreState = None
                 continue
             else :
                 assert False
@@ -472,5 +494,5 @@ class UCT(object) :
             self._exp_graph.register(n)
             self._exp_graph.add_root(n)
             self.root = n
-        self.root._d -= 1
+        self.root._d = 0
         self.current = self.root

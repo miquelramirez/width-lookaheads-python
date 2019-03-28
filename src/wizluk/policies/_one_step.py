@@ -133,7 +133,7 @@ class One_Step(object) :
 
             actionRollout += 1
             n.visited = True
-            if self.sim_calls - self.init_sim_calls < self.sim_budget:
+            if self.sim_calls - self.init_sim_calls < self.sim_budget or self._cost_to_go_est == "heuristic":
                 n.num_rollouts += 1
                 if self._atari == "True":
                     n.v += (self.cost_to_go_est(env, n) - n.v) / n.num_rollouts #taking ave of rollouts
@@ -160,10 +160,7 @@ class One_Step(object) :
             if child.Q > best_Q :
                 candidates = [act]
                 best_Q = child.Q
-                for node, reward in child.children:
-                    break
-                self._exp_graph.register(node)
-            elif child.Q == best_Q:
+            elif abs(child.Q - best_Q) < 0.0000001 :
                 candidates.append(act)
 
         best_action = random.choice(candidates)

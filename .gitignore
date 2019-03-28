@@ -117,3 +117,4 @@ data/*.h5
 data/*.json
 *.h5
 notebooks/hsdip-19-experiments/cost-to-go-data/*.dat
+results/*
