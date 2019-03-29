@@ -75,12 +75,13 @@ def run_single_run(iw_parameters,iw_variants, run_num, Domain, sim_dt, sim_budge
         x = np.reshape(x, [1, S])
         u = IW_Rollout_agent.get_action(x)
         x_next, reward, done, info = env.step(u)
-        x_next = np.reshape(x, [1, S])
+        x_next = np.reshape(x_next, [1, S])
         IW_Rollout_agent.observe_transition(x,u, reward, x_next, done, False)
         x = x_next
+        score += reward
         if done:
             break
-        score += reward
+
     IW_Rollout_agent.stop_episode()
     IW_Rollout_agent.collect_evaluation_statistics( IW_Rollout_df, x0 )
     with open('../results/{}_{}_simdt_{}_simBud_{}_Horizon_{}_numRoll_{}_runNum_{}.dat'.format(iw_variants['Name'][run_num],Domain, sim_dt, sim_budget, horizon, numberRollouts, runNum), 'wb') as output:
