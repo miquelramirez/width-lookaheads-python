@@ -219,7 +219,7 @@ def main(cmd_line_args) :
         seeds.append(p)
         if len(seeds) == num_seeds:
             break
-    for Domain, H in [("Skiing-machado-sticky-v0", 3)]:
+    for Domain, H in [("Skiing-machado-sticky-v0", 3600)]:
     #for Domain, H, numberRollouts in [("GridWorld-4x4-initS{}-v{}".format(intState, gridVersion), 20,4), ("GridWorld-10x10-initS{}-v{}".format(intState, gridVersion), 50, 10), ("GridWorld-20x20-initS{}-v{}".format(intState, gridVersion), 100, 20), ("GridWorld-50x50-initS{}-v{}".format(intState, gridVersion), 250, 50), ("GridWorld-100x100-initS{}-v{}".format(intState, gridVersion), 500, 100)]:
 #for Domain, H, numberRollouts in [("CTP-4x4-initS{}-v{}".format(intState, gridVersion), 20,4), ("CTP-10x10-initS{}-v{}".format(intState, gridVersion), 50, 10), ("CTP-20x20-initS{}-v{}".format(intState, gridVersion), 100, 20), ("CTP-50x50-initS{}-v{}".format(intState, gridVersion), 250, 50)]:
         for lookaheadBudget in [100]:
