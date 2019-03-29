@@ -109,7 +109,8 @@ class One_Step(object) :
 
         if self.windowEnv is not None :
             self.windowEnv.close()
-        self.make_root_node(s0)
+        state_flat = np.reshape(s0, [1, np.prod(env.observation_space.shape)])
+        self.make_root_node(state_flat)
         self.root.r = 0
         budget = self._budget
         n = self.root

@@ -119,7 +119,8 @@ class UCT(object) :
         no_caching = True
         if self.sim_calls != 0 and (self._caching == "Partial" or self._caching == "Full"):
             no_caching = False
-        self.make_root_node(s0, no_caching)
+        state_flat = np.reshape(s0, [1, np.prod(env.observation_space.shape)])
+        self.make_root_node(state_flat, no_caching)
         self.root.r = 0
         budget = self._budget
         n = self.root
