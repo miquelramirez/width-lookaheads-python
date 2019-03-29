@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from ._tabular import ClassicTabularNovelty, TabularNovelty, DepthBasedTabularNovelty
+from ._tabular import ClassicTabularNovelty, TabularNovelty, DepthBasedTabularNovelty, DepthBasedTabularNovelty, DepthBasedTabularNoveltyOptimised
 from ._base import Feature
 from ._state_vars import SVF
 
 _factory_entries = { 'TabularNovelty' : TabularNovelty,\
                     'ClassicTabularNovelty' : ClassicTabularNovelty,\
-                    'DepthBasedTabularNovelty': DepthBasedTabularNovelty
+                    'DepthBasedTabularNovelty': DepthBasedTabularNovelty,\
+                    'DepthBasedTabularNoveltyOptimised': DepthBasedTabularNoveltyOptimised
                     }
 
 def create(product_key, **kwargs ) :

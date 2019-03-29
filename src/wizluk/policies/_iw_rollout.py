@@ -5,7 +5,7 @@ import copy
 import numpy as np
 from collections import deque
 import wizluk
-from wizluk.heuristics.novelty import ClassicTabularNovelty, DepthBasedTabularNovelty
+from wizluk.heuristics.novelty import ClassicTabularNovelty, DepthBasedTabularNovelty, DepthBasedTabularNoveltyOptimised
 from wizluk.memory.and_or_graph import OR_Node, AND_Node, AND_OR_Graph
 from wizluk.policies._cost_to_go_policies import random_rollout, knuth_alg, stoch_enum_alg
 import sys
@@ -84,7 +84,10 @@ class DepthBasedRollout(object):
 
     def initialize_feature_table(self, lookahead, n : OR_Node) :
         if lookahead.emptyFeatureTable is None:
-            lookahead.root.feature_table = DepthBasedTabularNovelty()
+            if lookahead._useOptimisedDepthTable =='True':
+                lookahead.root.feature_table = DepthBasedTabularNoveltyOptimised()
+            else:
+                lookahead.root.feature_table = DepthBasedTabularNovelty()
             for f in lookahead._features :
                 lookahead.root.feature_table.add_feature(f)
             lookahead.emptyFeatureTable = copy.deepcopy(lookahead.root.feature_table)
@@ -145,6 +148,7 @@ class IW_Rollout(object) :
         self._include_root_in_novelty_table = kwargs.get('include_root_in_novelty_table','False')
         self._caching = kwargs.get('caching','None')
         base_policy_type = kwargs.get('base_policy', 'RandomPolicy')
+        self._useOptimisedDepthTable = kwargs.get('use_optimised_table', 'False') #Only for depth novelty and when features are state variables for width = 1
 
         #for sample trajectories for cost-to-go-approx
         self._num_rollouts = int(kwargs.get('num_rollouts',1))
