@@ -26,7 +26,7 @@ import sys
 
 import ray
 
-ray.init(num_cpus=2, num_gpus=0)
+ray.init(num_cpus=32, num_gpus=0)
 @ray.remote(num_cpus=1)
 def run_single_run(iw_parameters,iw_variants, run_num, Domain, sim_dt, sim_budget, horizon, numberRollouts, runNum, seed) :
     import time
