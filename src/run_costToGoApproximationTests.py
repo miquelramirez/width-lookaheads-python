@@ -72,11 +72,11 @@ def run_single_run(iw_parameters,iw_variants, run_num, Domain, sim_dt, sim_budge
     score = 0.0
     for s in range(horizon):
         wizluk.logger.debug("action number: {}".format(s))
-        x = np.reshape(x, [1, S])
+        x_flat = np.reshape(x, [1, S])
         u = IW_Rollout_agent.get_action(x)
         x_next, reward, done, info = env.step(u)
-        x_next = np.reshape(x_next, [1, S])
-        IW_Rollout_agent.observe_transition(x,u, reward, x_next, done, False)
+        x_next_flat = np.reshape(x_next, [1, S])
+        IW_Rollout_agent.observe_transition(x_flat,u, reward, x_next_flat, done, False)
         x = x_next
         score += reward
         if done:

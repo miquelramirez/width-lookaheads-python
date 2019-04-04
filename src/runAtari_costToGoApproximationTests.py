@@ -54,6 +54,17 @@ def run_single_run(iw_parameters,iw_variants, run_num, Domain, sim_dt, sim_budge
     warnings.showwarning = warn_with_traceback
     wizluk.setup_logger("iw_gridworld_v1.log")
     env = gym.make(Domain)
+    def numberOfGatesLeft():
+        ram = env.unwrapped._get_ram()
+        if ram[107] == 32:
+            return -20 * 500
+        elif ram[107] > 15:
+            return - (ram[107] - 6) * 500
+        elif ram[107] < 10:
+            return - ram[107] * 500
+        else:
+            assert(False)
+    env.unwrapped.getAdmissibleHeuristic = numberOfGatesLeft
     np.random.seed(seed)
     env.seed(seed)
     random.seed(seed)
